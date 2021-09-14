@@ -1192,6 +1192,20 @@ function initPaint(svgId, conf = null) {
     undoList.push(redoEle);
     boxSizeList.push(redoBoxSizeList.pop());
   });
+  
+  function RedoKeyPress(e) {
+      var evtobj = window.event? event : e
+      if (evtobj.keyCode == 89 && evtobj.ctrlKey) {
+        if (redoList.length < 1) {
+          return;
+        }
+        let redoEle = redoList.pop();
+        svg.append(redoEle);
+        undoList.push(redoEle);
+        boxSizeList.push(redoBoxSizeList.pop());
+      }
+    }
+  document.onkeydown = RedoKeyPress;
 
   document.querySelector("#svg-clean").addEventListener("click", e => {
     undoList = [];
