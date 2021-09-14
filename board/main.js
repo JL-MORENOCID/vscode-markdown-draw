@@ -1168,6 +1168,20 @@ function initPaint(svgId, conf = null) {
     redoList.push(undoEle);
     redoBoxSizeList.push(boxSizeList.pop());
   });
+  
+  function UndoKeyPress(e) {
+      var evtobj = window.event? event : e
+      if (evtobj.keyCode == 90 && evtobj.ctrlKey) {
+        if (undoList.length < 1) {
+          return;
+        }
+        let undoEle = undoList.pop();
+        undoEle.remove();
+        redoList.push(undoEle);
+        redoBoxSizeList.push(boxSizeList.pop());
+      }
+    }
+  document.onkeydown = UndoKeyPress;
 
   document.querySelector("#svg-redo").addEventListener("click", e => {
     if (redoList.length < 1) {
